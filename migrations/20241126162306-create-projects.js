@@ -11,8 +11,7 @@ module.exports = {
       },
       name: {
         allowNull: false,
-        unique: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
       },
       task_id: {
         type: Sequelize.INTEGER,
@@ -23,17 +22,37 @@ module.exports = {
           },
           key: 'id',
         },
+        onDelete: 'CASCADE'
       },
       description: {
         type: Sequelize.STRING,
-      },
-      createdAt: {
         allowNull: false,
+      },
+      creator_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: {
+            tableName: 'Users'
+          },
+          key: 'id',
+        }
+      },
+      created_at: {
         type: Sequelize.DATE,
-      },
-      id_deleted: {
+        defaultValue: Sequelize.NOW,
         allowNull: false,
-        type: Sequelize.BOOLEAN,
+      },
+      updated_at: {
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW,
+        allowNull: false,
+      },
+
+      deleted_at: {
+        type: Sequelize.DATE || null,
+        defaultValue: null,
+        allowNull: true,
       },
     });
   },

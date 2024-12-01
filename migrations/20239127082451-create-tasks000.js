@@ -11,10 +11,11 @@ module.exports = {
       },
       name: {
         type: Sequelize.STRING,
-        unique: true,
+        allowNull: false,
       },
       description: {
         type: Sequelize.STRING,
+        allowNull: false,
       },
       responsible_id: {
         type: Sequelize.INTEGER,
@@ -24,15 +25,34 @@ module.exports = {
           },
           key: 'id',
         },
+        defaultValue: null,
+        allowNull: true,
       },
       deadline: {
         type: Sequelize.DATE,
+        defaultValue: null,
+        allowNull: true,
       },
       status: {
         type: Sequelize.BOOLEAN,
+        defaultValue: null,
+        allowNull: true,
       },
-      is_deleted: {
-        type: Sequelize.BOOLEAN,
+      created_at: {
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW,
+        allowNull: false,
+      },
+      updated_at: {
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW,
+        allowNull: false,
+      },
+
+      deleted_at: {
+        type: Sequelize.DATE || null,
+        defaultValue: null,
+        allowNull: true,
       },
     });
   },

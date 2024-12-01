@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards, Delete } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards, Delete, Patch } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/createUser';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -6,6 +6,7 @@ import { User } from './users.modules';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Roles } from '../auth/roles_auth.decorator';
 import { RolesGuard } from '../auth/roles-guard';
+import { DeleteUserDto } from './dto/deleteUser';
 // Документирую тег набора контроллеров
 @ApiTags('Пользователи')
 @Controller('/users')
@@ -24,13 +25,13 @@ export class UsersController {
     return this.UsersService.createUser(userDto);
   }
 
-  @ApiOperation({ summary: 'Получить всех пользователей' })
+  @ApiOperation({ summary: 'Удаление пользователя' })
   @ApiResponse({ status: 200, type: [User] })
   // чтобы допустить работу только для определенных ролей, пишем roles
   @Roles('Admin')
   @UseGuards(RolesGuard)
-  @Delete()
-  delete_employee() {
-    return this.UsersService.delete_empoyee();
+  @Delete('/id')
+  archive_employee(@Body() userDto: DeleteUserDto) {
+    return this.UsersService.delete_employee(userDto);
   }
 }

@@ -1,10 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Column, Model, Table, DataType } from 'sequelize-typescript';
-interface User_creation {
+interface UserCreation {
   password: string;
   email: string;
   username: string;
-  role: string;
 }
 
 @Table({
@@ -14,7 +13,7 @@ interface User_creation {
   updatedAt: 'updated_at',
 })
 // здесь документируем класс user,чтобы указывало его структуру, которая ожидается на возврат
-export class User extends Model<User, User_creation> {
+export class User extends Model<User, UserCreation> {
   @ApiProperty({ example: '1', description: 'Уникальный идентификатор' })
   @Column({
     type: DataType.INTEGER,
@@ -36,11 +35,11 @@ export class User extends Model<User, User_creation> {
   @Column({ type: DataType.STRING, allowNull: false })
   username: string;
 
-  @ApiProperty({ example: 'employe', description: 'Роль пользователя' })
+  @ApiProperty({ example: 'employee', description: 'Роль пользователя' })
   @Column({ type: DataType.STRING, allowNull: false, defaultValue: 'employee' })
   role: string;
 
-  @ApiProperty({ example: 'null', description: 'Удален пользователь или нет' })
+  @ApiProperty({ example: 'null', description: 'Архивирован пользователь или нет' })
   @Column({ type: DataType.DATE, allowNull: true, defaultValue: null })
-  deleted_at: Date | null;
+  deleted_at?: Date | null;
 }
