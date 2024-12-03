@@ -4,6 +4,6 @@ export class setResponsibleDto {
   @ApiProperty({ example: 10, description: 'Id изменяемой задачи' })
   readonly id: number;
 
-  @ApiProperty({ example: false, description: 'Новый ответсвенный задачи' })
+  @ApiProperty({ example: 2, description: 'Id ответсвенного за задачу' })
   readonly responsible_id: number;
 }

@@ -13,17 +13,6 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING,
       },
-      task_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: {
-            tableName: 'Tasks',
-          },
-          key: 'id',
-        },
-        onDelete: 'CASCADE'
-      },
       description: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -33,10 +22,10 @@ module.exports = {
         allowNull: false,
         references: {
           model: {
-            tableName: 'Users'
+            tableName: 'Users',
           },
           key: 'id',
-        }
+        },
       },
       created_at: {
         type: Sequelize.DATE,

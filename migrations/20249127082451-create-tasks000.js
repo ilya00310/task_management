@@ -17,6 +17,16 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      project_id: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: {
+            tableName: 'Projects',
+          },
+          key: 'id',
+        },
+        allowNull: false,
+      },
       responsible_id: {
         type: Sequelize.INTEGER,
         references: {

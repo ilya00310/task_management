@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
     async up(queryInterface, Sequelize) {
-        await queryInterface.createTable('Users_projects', {
+        await queryInterface.createTable('UsersProjects', {
             id: {
                 allowNull: false,
                 autoIncrement: true,
@@ -17,7 +17,6 @@ module.exports = {
                     },
                     key: 'id',
                 },
-                onDelete: 'CASCADE',
             },
             project_id: {
                 type: Sequelize.INTEGER,
@@ -28,7 +27,6 @@ module.exports = {
                     },
                     key: 'id',
                 },
-                onDelete: 'CASCADE',
             },
         });
     },

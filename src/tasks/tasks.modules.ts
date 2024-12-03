@@ -3,6 +3,7 @@ import { Column, Model, Table, DataType } from 'sequelize-typescript';
 interface TaskCreation {
   name: string;
   description: string;
+  project_id: number;
   responsible_id: number;
   deadline: Date;
   status: boolean;
@@ -32,6 +33,10 @@ export class Task extends Model<Task, TaskCreation> {
   @ApiProperty({ example: 'Реализовать аутентификацию', description: 'Описание задачи' })
   @Column({ type: DataType.STRING, allowNull: false })
   description: string;
+
+  @ApiProperty({ example: 12, description: 'Id проекта' })
+  @Column({ type: DataType.INTEGER, allowNull: false })
+  project_id: number;
 
   @ApiProperty({ example: 14, description: 'Id ответсвенного пользователя' })
   @Column({ type: DataType.INTEGER, allowNull: true, defaultValue: null })

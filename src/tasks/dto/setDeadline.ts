@@ -4,6 +4,6 @@ export class setDeadlineDto {
   @ApiProperty({ example: 10, description: 'Id изменяемой задачи' })
   readonly id: number;
 
-  @ApiProperty({ example: false, description: 'Новый дедлайн задачи' })
+  @ApiProperty({ example: '2025-01-03', description: 'Новый дедлайн задачи' })
   readonly deadline: Date;
 }

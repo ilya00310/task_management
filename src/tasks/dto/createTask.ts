@@ -7,12 +7,15 @@ export class CreateTaskDto {
   @ApiProperty({ example: 'Реализовать аутентификацию', description: 'Описание задачи' })
   readonly description: string;
 
+  @ApiProperty({ example: 4, description: 'Id проекта' })
+  readonly project_id: number;
+
   @ApiProperty({ example: 10, description: 'Id ответсвенного пользователя' })
-  readonly responsible_id: number;
+  responsible_id: number;
 
   @ApiProperty({ example: '2024-01-12', description: 'Дедлайн задачи' })
   readonly deadline: Date;
 
-  @ApiProperty({ example: 'completed', description: 'Статус выполнения задачи' })
+  @ApiProperty({ example: false, description: 'Статус выполнения задачи' })
   readonly status: boolean;
 }
