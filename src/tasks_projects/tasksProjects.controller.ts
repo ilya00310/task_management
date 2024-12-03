@@ -1,9 +1,9 @@
 import { Controller } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { UsersProjectsService } from './usersProjects.service';
+import { TasksProjectsService } from './tasksProjects.service';
 // Документирую тег набора контроллеров
 @ApiTags('Project users')
 @Controller('/users')
-export class UsersProjectsController {
-  constructor(private UsersProjectsService: UsersProjectsService) {}
+export class TasksProjectsController {
+  constructor(private UsersProjectsService: TasksProjectsService) {}
 }

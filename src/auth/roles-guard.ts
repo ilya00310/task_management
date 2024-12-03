@@ -21,13 +21,13 @@ export class RolesGuard implements CanActivate {
       const bearer = authHeader.split(' ')[0];
       const token = authHeader.split(' ')[1];
       if (bearer !== 'Bearer' || !token) {
-        throw new UnauthorizedException({ message: 'Пользователь не имеет прав' });
+        throw new UnauthorizedException({ message: "User haven't rights" });
       }
       const user = this.jwtService.verify(token);
       req.user = user;
       return Object.values(requiredRoles).includes(user.role);
     } catch (e) {
-      throw new UnauthorizedException({ message: 'Пользователь не имеет прав' });
+      throw new UnauthorizedException({ message: "User haven't rights" });
     }
   }
 }

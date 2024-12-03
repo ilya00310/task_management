@@ -23,36 +23,33 @@ export class ProjectsService {
   async deleteProject(dto: DeleteProjectDto): Promise<string> {
     const { id } = dto;
     const project = await this.projectRepository.findOne({ where: { id } });
-    if (!project) {
-      throw new NotFoundException('Проект не найден');
-    }
-
-    if (project.deleted_at !== null) {
-      throw new BadRequestException('Проект уже архивирован');
+    // найти способ автоматизировать проверку на null
+    if (!project || project.deleted_at !== null) {
+      throw new NotFoundException("Project don't found");
     }
     await this.projectRepository.update({ deleted_at: new Date(Date.now()) }, { where: { name: project.name } });
-    return 'Проект удален';
+    return 'Project delete';
   }
 
   async addUserOnProject(dto: CreateUsersProjectsDto): Promise<UsersProjects> {
     const { user_id, project_id } = dto;
     const project = await this.projectRepository.findOne({ where: { id: project_id } });
     if (!project) {
-      throw new NotFoundException('Проект не найден');
+      throw new NotFoundException("Project don't found");
     }
     const user = await this.userRepository.getUserById(user_id);
     if (!user) {
-      throw new NotFoundException('Пользователь не найден');
+      throw new NotFoundException("User don't found");
     }
     const usersProject = await this.userProjectRepository.createUsersProjects(dto);
     return usersProject;
   }
-
+  //
   async updateProject(dto: UpdateProjectDto): Promise<Project> {
     const { project_id, name, description } = dto;
-    const project = await this.projectRepository.findOne({ where: { id: project_id } });
+    const project = await this.projectRepository.findOne({ where: { id: project_id, deleted_at: null } });
     if (!project) {
-      throw new NotFoundException('Проект не найден');
+      throw new NotFoundException("Project don't found");
     }
     await this.projectRepository.update({ name, description }, { where: { id: project_id } });
     const newProject = await this.projectRepository.findOne({ where: { id: project_id } });

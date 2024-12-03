@@ -15,11 +15,11 @@ export class UsersService {
     const { id } = userDto;
     const user = await this.userRepository.findOne({ where: { id } });
     if (!user) {
-      throw new NotFoundException('Пользователь не найден');
+      throw new NotFoundException("User don't found");
     }
 
     if (user.deleted_at !== null) {
-      throw new BadRequestException('Пользователь уже архивирован');
+      throw new BadRequestException('User is already archived');
     }
 
     user.deleted_at = new Date();

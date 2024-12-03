@@ -14,7 +14,7 @@ interface UserCreation {
 })
 // здесь документируем класс user,чтобы указывало его структуру, которая ожидается на возврат
 export class User extends Model<User, UserCreation> {
-  @ApiProperty({ example: '1', description: 'Уникальный идентификатор' })
+  @ApiProperty({ example: '1', description: 'Unique id' })
   @Column({
     type: DataType.INTEGER,
     unique: true,
@@ -23,23 +23,23 @@ export class User extends Model<User, UserCreation> {
   })
   id: number;
 
-  @ApiProperty({ example: '13123123', description: 'Пароль пользователя' })
+  @ApiProperty({ example: '13123123', description: 'User password' })
   @Column({ type: DataType.STRING, allowNull: false })
   password: string;
 
-  @ApiProperty({ example: 'user@mail.ru', description: 'Почта пользователя' })
+  @ApiProperty({ example: 'user@mail.ru', description: 'User email' })
   @Column({ type: DataType.STRING, allowNull: false })
   email: string;
 
-  @ApiProperty({ example: 'Ilya00310', description: 'Имя пользователя' })
+  @ApiProperty({ example: 'Ilya00310', description: 'Username' })
   @Column({ type: DataType.STRING, allowNull: false })
   username: string;
 
-  @ApiProperty({ example: 'employee', description: 'Роль пользователя' })
+  @ApiProperty({ example: 'employee', description: 'User role' })
   @Column({ type: DataType.STRING, allowNull: false, defaultValue: 'employee' })
   role: string;
 
-  @ApiProperty({ example: 'null', description: 'Архивирован пользователь или нет' })
+  @ApiProperty({ example: 'null', description: 'User is archived or not' })
   @Column({ type: DataType.DATE, allowNull: true, defaultValue: null })
   deleted_at?: Date | null;
 }

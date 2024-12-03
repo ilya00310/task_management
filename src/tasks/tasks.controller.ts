@@ -9,14 +9,14 @@ import { setStatusDto } from './dto/setStatusDto';
 import { setDeadlineDto } from './dto/setDeadline';
 import { setResponsibleDto } from './dto/setResponsibleDto';
 import { updateTaskDto } from './dto/updateTaskDto';
-
+// везде передавать id через query string
 // Документирую тег набора контроллеров
 @ApiTags('Задачи')
 @Controller('/tasks')
 export class TasksController {
   constructor(private TasksService: TasksService) {}
 
-  @ApiOperation({ summary: 'Создание задачи' })
+  @ApiOperation({ summary: 'Create task' })
   @ApiResponse({ status: 200, type: Task })
   @UseGuards(JwtAuthGuard)
   @Post()
@@ -25,16 +25,17 @@ export class TasksController {
     return this.TasksService.createTask(taskDto, currentUser);
   }
 
-  @ApiOperation({ summary: 'Удаление задачи' })
+  @ApiOperation({ summary: 'Delete task' })
   @ApiResponse({ status: 200, type: Task })
   @UseGuards(JwtAuthGuard)
   @Delete('/id')
   delete(@Body() taskDto: DeleteTaskDto, @Request() req) {
     const currentUser = req.user;
+    // переименовать в ед.ч
     return this.TasksService.deleteTasks(taskDto, currentUser);
   }
 
-  @ApiOperation({ summary: 'Установка статуса задачи' })
+  @ApiOperation({ summary: 'Set task status' })
   @ApiResponse({ status: 200, type: Task })
   @UseGuards(JwtAuthGuard)
   @Patch('/status')
@@ -43,7 +44,7 @@ export class TasksController {
     return this.TasksService.setStatus(taskDto, currentUser);
   }
 
-  @ApiOperation({ summary: 'Установка дедлайна' })
+  @ApiOperation({ summary: 'Set deadline' })
   @ApiResponse({ status: 200, type: Task })
   @UseGuards(JwtAuthGuard)
   @Patch('/deadline')
@@ -52,7 +53,7 @@ export class TasksController {
     return this.TasksService.setDeadline(taskDto, currentUser);
   }
 
-  @ApiOperation({ summary: 'Назначение ответсвенного' })
+  @ApiOperation({ summary: 'Set responsible' })
   @ApiResponse({ status: 200, type: Task })
   @UseGuards(JwtAuthGuard)
   @Patch('/responsible')
@@ -61,7 +62,7 @@ export class TasksController {
     return this.TasksService.setResponsible(taskDto, currentUser);
   }
 
-  @ApiOperation({ summary: 'Обновление задачи' })
+  @ApiOperation({ summary: 'Update task' })
   @ApiResponse({ status: 200, type: String })
   @UseGuards(JwtAuthGuard)
   @Patch()

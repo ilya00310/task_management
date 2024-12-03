@@ -10,12 +10,12 @@ import { CreateUsersProjectsDto } from '../users_projects/dto/createUsersProject
 import { UsersProjects } from '../users_projects/usersProjects.modules';
 import { UpdateProjectDto } from './dto/updateProjectDto';
 // Документирую тег набора контроллеров
-@ApiTags('Проекты')
+@ApiTags('Projects')
 @Controller('/projects')
 export class ProjectsController {
   constructor(private ProjectsService: ProjectsService) {}
 
-  @ApiOperation({ summary: 'Создание проекта' })
+  @ApiOperation({ summary: 'Creating a project' })
   @ApiResponse({ status: 200, type: Project })
   @Roles('Admin')
   @UseGuards(RolesGuard)
@@ -24,7 +24,7 @@ export class ProjectsController {
     return this.ProjectsService.createProject(taskDto);
   }
 
-  @ApiOperation({ summary: 'Удаление проекта' })
+  @ApiOperation({ summary: 'Deleting a project' })
   @ApiResponse({ status: 200, type: Project })
   @Roles('Admin')
   @UseGuards(RolesGuard)
@@ -33,16 +33,16 @@ export class ProjectsController {
     return this.ProjectsService.deleteProject(taskDto);
   }
 
-  @ApiOperation({ summary: 'Добавление пользователя на доску' })
+  @ApiOperation({ summary: 'Adding a user to a board' })
   @ApiResponse({ status: 200, type: UsersProjects })
-  @Post('/usersProjects')
+  @Post('/users_projects')
   @Roles('Admin')
   @UseGuards(RolesGuard)
   setUserOnProject(@Body() taskDto: CreateUsersProjectsDto) {
     return this.ProjectsService.addUserOnProject(taskDto);
   }
-
-  @ApiOperation({ summary: 'Редактирование проекта' })
+  // передавать id через строку запроса
+  @ApiOperation({ summary: 'Editing a project' })
   @ApiResponse({ status: 200, type: Project })
   @Patch()
   @Roles('Admin')

@@ -14,7 +14,7 @@ interface ProjectCreation {
 })
 // здесь документируем класс user,чтобы указывало его структуру, которая ожидается на возврат
 export class Project extends Model<Project, ProjectCreation> {
-  @ApiProperty({ example: '1', description: 'Уникальный идентификатор' })
+  @ApiProperty({ example: '1', description: 'Unique id' })
   @Column({
     type: DataType.INTEGER,
     unique: true,
@@ -23,19 +23,19 @@ export class Project extends Model<Project, ProjectCreation> {
   })
   id: number;
 
-  @ApiProperty({ example: 'onlineShop', description: 'Название проекта' })
+  @ApiProperty({ example: 'online_shop', description: 'Project name' })
   @Column({ type: DataType.STRING, allowNull: false })
   name: string;
 
-  @ApiProperty({ example: 'Реализовать онлайн магазин', description: 'Описание проекта' })
+  @ApiProperty({ example: 'Realize online shop', description: 'Project description' })
   @Column({ type: DataType.STRING, allowNull: false })
   description: string;
 
-  @ApiProperty({ example: 'Ilya', description: 'Ответственный пользователь' })
+  @ApiProperty({ example: 'Ilya', description: 'Responsible user' })
   @Column({ type: DataType.NUMBER, allowNull: false })
   creator_id: Number;
 
-  @ApiProperty({ example: 'null', description: 'Архивирован проект или нет' })
+  @ApiProperty({ example: 'null', description: 'Project archived or not' })
   @Column({ type: DataType.DATE, allowNull: true, defaultValue: null })
   deleted_at?: Date | null;
 }

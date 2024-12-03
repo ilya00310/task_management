@@ -23,7 +23,7 @@ export class AuthService {
   async registration(userDto: CreateUserDto) {
     const candidate = await this.userService.getUserByEmail(userDto.email);
     if (candidate) {
-      throw new HttpException('Пользователь с таким email существуется', HttpStatus.BAD_REQUEST);
+      throw new HttpException('Users with current email address exist', HttpStatus.BAD_REQUEST);
     }
     const hashPassword = await bcrypt.hash(userDto.password, 5);
     const user = await this.userService.createUser({ ...userDto, password: hashPassword });
@@ -42,7 +42,7 @@ export class AuthService {
       return user;
     }
     throw new UnauthorizedException({
-      message: 'Некорректный имейл или пароль',
+      message: 'Email or password incorrect',
     });
   }
 }

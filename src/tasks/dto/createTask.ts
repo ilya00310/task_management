@@ -1,21 +1,21 @@
 import { ApiProperty } from '@nestjs/swagger';
 // документируем, указывая, какого формата данные ожидаются на вход
 export class CreateTaskDto {
-  @ApiProperty({ example: 'Аутентификация', description: 'Название задачи' })
+  @ApiProperty({ example: 'Authentication', description: 'Project name' })
   readonly name: string;
 
-  @ApiProperty({ example: 'Реализовать аутентификацию', description: 'Описание задачи' })
+  @ApiProperty({ example: 'Realize authentication', description: 'Task description' })
   readonly description: string;
 
-  @ApiProperty({ example: 4, description: 'Id проекта' })
+  @ApiProperty({ example: 4, description: 'Project id' })
   readonly project_id: number;
 
-  @ApiProperty({ example: 10, description: 'Id ответсвенного пользователя' })
+  @ApiProperty({ example: 10, description: 'Responsible user id' })
   responsible_id: number;
 
-  @ApiProperty({ example: '2024-01-12', description: 'Дедлайн задачи' })
+  @ApiProperty({ example: '2024-01-12', description: 'Task deadline' })
   readonly deadline: Date;
 
-  @ApiProperty({ example: false, description: 'Статус выполнения задачи' })
+  @ApiProperty({ example: false, description: 'Task completion status' })
   readonly status: boolean;
 }

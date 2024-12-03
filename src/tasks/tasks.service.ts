@@ -16,13 +16,13 @@ export class TasksService {
     @InjectModel(Task) private taskRepository: typeof Task,
     private usersProjectsRepository: UsersProjectsService,
   ) {}
-
+  // сделать проверку на существование проекта
   async createTask(dto: CreateTaskDto, currentUser: CurrentUserDto): Promise<Task> {
     const { id, role } = currentUser;
     const { project_id } = dto;
     const currentUsersProjects = await this.usersProjectsRepository.getUsersProjectsCompliance(id, project_id);
     if (!currentUsersProjects && role === 'employee') {
-      throw new NotFoundException('Пользователь не прикреплен к проекту ');
+      throw new NotFoundException("User don't assigned to the project");
     }
 
     if (!dto.responsible_id) {
@@ -31,21 +31,20 @@ export class TasksService {
     const task = await this.taskRepository.create(dto);
     return task;
   }
-
+  // добавить проверку на то, что пользователь является создателем проекта таски
   async deleteTasks(dto: DeleteTaskDto, currentUser: CurrentUserDto): Promise<Task> {
     const { id } = dto;
     const task = await this.taskRepository.findOne({ where: { id } });
-    const taskCurrentUser = await this.taskRepository.findOne({ where: { responsible_id: currentUser.id, name: task.name } });
     if (!task) {
-      throw new NotFoundException('Задача не найдена');
+      throw new NotFoundException('Task don\t found');
     }
-
+    const taskCurrentUser = await this.taskRepository.findOne({ where: { responsible_id: currentUser.id, name: task.name } });
     if (task.deleted_at !== null) {
-      throw new BadRequestException('Задача уже архивирована');
+      throw new BadRequestException('task has already been archived');
     }
 
     if (!taskCurrentUser && currentUser.role === 'employee') {
-      throw new BadRequestException('Задача не относится к этому сотруднику');
+      throw new BadRequestException("Task dose'nt apply to this employee");
     }
 
     task.deleted_at = new Date();
@@ -56,16 +55,15 @@ export class TasksService {
   async setStatus(dto: setStatusDto, currentUser: CurrentUserDto): Promise<Task> {
     const { id, status } = dto;
     const task = await this.taskRepository.findOne({ where: { id } });
-    const taskCurrentUser = await this.taskRepository.findOne({ where: { responsible_id: currentUser.id, name: task.name } });
     if (!task) {
-      throw new NotFoundException('Задача не найдена');
+      throw new NotFoundException('Task don\t found');
     }
-
+    const taskCurrentUser = await this.taskRepository.findOne({ where: { responsible_id: currentUser.id, name: task.name } });
     if (task.status === status) {
-      throw new BadRequestException('Текущий статус уже установлен');
+      throw new BadRequestException("Current status don't set");
     }
     if (!taskCurrentUser && currentUser.role === 'employee') {
-      throw new BadRequestException('Задача не относится к этому сотруднику');
+      throw new BadRequestException("Task dose'nt apply to this employee");
     }
     task.status = status;
     await task.save();
@@ -77,10 +75,10 @@ export class TasksService {
     const task = await this.taskRepository.findOne({ where: { id } });
     const taskCurrentUser = await this.taskRepository.findOne({ where: { responsible_id: currentUser.id, name: task.name } });
     if (!task) {
-      throw new NotFoundException('Задача не найдена');
+      throw new NotFoundException('Task don\t found');
     }
     if (!taskCurrentUser && currentUser.role === 'employee') {
-      throw new BadRequestException('Задача не относится к этому сотруднику');
+      throw new BadRequestException("Task dose'nt apply to this employee");
     }
     task.deadline = deadline;
     await task.save();
@@ -92,10 +90,10 @@ export class TasksService {
     const task = await this.taskRepository.findOne({ where: { id } });
     const taskCurrentUser = await this.taskRepository.findOne({ where: { responsible_id: currentUser.id, name: task.name } });
     if (!task) {
-      throw new NotFoundException('Задача не найдена');
+      throw new NotFoundException('Task don\t found');
     }
     if (!taskCurrentUser && currentUser.role === 'employee') {
-      throw new BadRequestException('Задача не относится к этому сотруднику');
+      throw new BadRequestException("Task dose'nt apply to this employee");
     }
 
     task.responsible_id = responsible_id;
@@ -108,12 +106,12 @@ export class TasksService {
     const task = await this.taskRepository.findOne({ where: { id } });
     const taskCurrentUser = await this.taskRepository.findOne({ where: { responsible_id: currentUser.id, name: task.name } });
     if (!task) {
-      throw new NotFoundException('Задача не найдена');
+      throw new NotFoundException('Task don\t found');
     }
     if (!taskCurrentUser && currentUser.role === 'employee') {
-      throw new BadRequestException('Задача не относится к этому сотруднику');
+      throw new BadRequestException("Task dose'nt apply to this employee");
     }
     await this.taskRepository.update({ name, description }, { where: { id } });
-    return 'Задача обновлена';
+    return 'Task update';
   }
 }

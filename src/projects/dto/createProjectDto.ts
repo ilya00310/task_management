@@ -1,12 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 // документируем, указывая, какого формата данные ожидаются на вход
 export class CreateProjectDto {
-  @ApiProperty({ example: 'onlineShop', description: 'Название проекта' })
+  @ApiProperty({ example: 'online_shop', description: 'Project name' })
   readonly name: string;
 
-  @ApiProperty({ example: 'создать онлайн магазин', description: 'Описание проекта' })
+  @ApiProperty({ example: 'Create online shop', description: 'Project description' })
   readonly description: string;
 
-  @ApiProperty({ example: 1, description: 'Создатель проекта' })
+  @ApiProperty({ example: 1, description: 'Project creator' })
   readonly creator_id: number;
 }

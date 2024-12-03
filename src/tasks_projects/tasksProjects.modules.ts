@@ -1,16 +1,16 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Column, Model, Table, DataType } from 'sequelize-typescript';
-interface UserProjectsCreation {
+interface TaskProjectsCreation {
   user_id: number;
-  project_id: number;
+  task_id: number;
 }
 
 @Table({
-  tableName: 'Users_projects',
+  tableName: 'UsersProjects',
   timestamps: false,
 })
 // здесь документируем класс user,чтобы указывало его структуру, которая ожидается на возврат
-export class UsersProjects extends Model<UsersProjects, UserProjectsCreation> {
+export class TasksProjects extends Model<TasksProjects, TaskProjectsCreation> {
   @ApiProperty({ example: '1', description: 'Unique id' })
   @Column({
     type: DataType.INTEGER,
@@ -26,5 +26,5 @@ export class UsersProjects extends Model<UsersProjects, UserProjectsCreation> {
 
   @ApiProperty({ example: 6, description: 'Project id' })
   @Column({ type: DataType.INTEGER, allowNull: false })
-  project_id: number;
+  task_id: number;
 }
