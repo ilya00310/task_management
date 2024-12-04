@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-// документируем, указывая, какого формата данные ожидаются на вход
 export class CreateTaskDto {
   @ApiProperty({ example: 'Authentication', description: 'Project name' })
   readonly name: string;
@@ -9,9 +8,6 @@ export class CreateTaskDto {
 
   @ApiProperty({ example: 4, description: 'Project id' })
   readonly project_id: number;
-
-  @ApiProperty({ example: 10, description: 'Responsible user id' })
-  responsible_id: number;
 
   @ApiProperty({ example: '2024-01-12', description: 'Task deadline' })
   readonly deadline: Date;

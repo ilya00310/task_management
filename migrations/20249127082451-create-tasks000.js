@@ -27,17 +27,6 @@ module.exports = {
         },
         allowNull: false,
       },
-      responsible_id: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: {
-            tableName: 'Users',
-          },
-          key: 'id',
-        },
-        defaultValue: null,
-        allowNull: true,
-      },
       deadline: {
         type: Sequelize.DATE,
         defaultValue: null,

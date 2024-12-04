@@ -2,21 +2,24 @@ import { InjectModel } from '@nestjs/sequelize';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { Task } from './tasks.modules';
 import { CreateTaskDto } from './dto/createTask';
-import { DeleteTaskDto } from './dto/deleteTask';
 import { setStatusDto } from './dto/setStatusDto';
 import { setDeadlineDto } from './dto/setDeadline';
 import { setResponsibleDto } from './dto/setResponsibleDto';
 import { CurrentUserDto } from '../auth/dto/currentUserDto';
 import { updateTaskDto } from './dto/updateTaskDto';
 import { UsersProjectsService } from '../users_projects/usersProjects.service';
+import { TasksUsersService } from '../tasks_users/tasksUsers.service';
+import { UsersService } from '../users/users.service';
+import { Tasks_users } from '../tasks_users/tasksUsers.modules';
 
 @Injectable()
 export class TasksService {
   constructor(
     @InjectModel(Task) private taskRepository: typeof Task,
     private usersProjectsRepository: UsersProjectsService,
+    private tasksUsersRepository: TasksUsersService,
+    private usersRepository: UsersService,
   ) {}
-  // сделать проверку на существование проекта
   async createTask(dto: CreateTaskDto, currentUser: CurrentUserDto): Promise<Task> {
     const { id, role } = currentUser;
     const { project_id } = dto;
@@ -24,94 +27,90 @@ export class TasksService {
     if (!currentUsersProjects && role === 'employee') {
       throw new NotFoundException("User don't assigned to the project");
     }
-
-    if (!dto.responsible_id) {
-      dto.responsible_id = id;
-    }
     const task = await this.taskRepository.create(dto);
+    await this.tasksUsersRepository.createTasksUsers({ user_id: id, task_id: task.id });
     return task;
   }
   // добавить проверку на то, что пользователь является создателем проекта таски
-  async deleteTasks(dto: DeleteTaskDto, currentUser: CurrentUserDto): Promise<Task> {
-    const { id } = dto;
+  async deleteTask(id: number, currentUser: CurrentUserDto): Promise<Task> {
     const task = await this.taskRepository.findOne({ where: { id } });
     if (!task) {
-      throw new NotFoundException('Task don\t found');
+      throw new NotFoundException("Task don't found");
     }
-    const taskCurrentUser = await this.taskRepository.findOne({ where: { responsible_id: currentUser.id, name: task.name } });
     if (task.deleted_at !== null) {
       throw new BadRequestException('task has already been archived');
     }
-
+    const taskCurrentUser = await this.tasksUsersRepository.getTasksUsersCompliance(currentUser.id, id);
     if (!taskCurrentUser && currentUser.role === 'employee') {
-      throw new BadRequestException("Task dose'nt apply to this employee");
+      throw new BadRequestException("User don't tied to current task");
     }
-
     task.deleted_at = new Date();
     await task.save();
     return task;
   }
 
-  async setStatus(dto: setStatusDto, currentUser: CurrentUserDto): Promise<Task> {
-    const { id, status } = dto;
+  async setStatus(dto: setStatusDto, id: number, currentUser: CurrentUserDto): Promise<Task> {
+    const { status } = dto;
     const task = await this.taskRepository.findOne({ where: { id } });
     if (!task) {
-      throw new NotFoundException('Task don\t found');
+      throw new NotFoundException("Task don't found");
     }
-    const taskCurrentUser = await this.taskRepository.findOne({ where: { responsible_id: currentUser.id, name: task.name } });
-    if (task.status === status) {
-      throw new BadRequestException("Current status don't set");
-    }
+    const taskCurrentUser = await this.tasksUsersRepository.getTasksUsersCompliance(currentUser.id, id);
     if (!taskCurrentUser && currentUser.role === 'employee') {
-      throw new BadRequestException("Task dose'nt apply to this employee");
+      throw new BadRequestException("User don't tied to current task ");
     }
+    if (task.status === status) {
+      throw new BadRequestException('Current status set');
+    }
+
     task.status = status;
     await task.save();
     return task;
   }
 
-  async setDeadline(dto: setDeadlineDto, currentUser: CurrentUserDto): Promise<Task> {
-    const { id, deadline } = dto;
+  async setDeadline(dto: setDeadlineDto, id: number, currentUser: CurrentUserDto): Promise<Task> {
+    const { deadline } = dto;
     const task = await this.taskRepository.findOne({ where: { id } });
-    const taskCurrentUser = await this.taskRepository.findOne({ where: { responsible_id: currentUser.id, name: task.name } });
+    const taskCurrentUser = await this.tasksUsersRepository.getTasksUsersCompliance(currentUser.id, id);
+    if (!taskCurrentUser && currentUser.role === 'employee') {
+      throw new BadRequestException("User don't tied to current task ");
+    }
     if (!task) {
       throw new NotFoundException('Task don\t found');
     }
-    if (!taskCurrentUser && currentUser.role === 'employee') {
-      throw new BadRequestException("Task dose'nt apply to this employee");
-    }
+
     task.deadline = deadline;
     await task.save();
     return task;
   }
 
-  async setResponsible(dto: setResponsibleDto, currentUser: CurrentUserDto): Promise<Task> {
-    const { id, responsible_id } = dto;
-    const task = await this.taskRepository.findOne({ where: { id } });
-    const taskCurrentUser = await this.taskRepository.findOne({ where: { responsible_id: currentUser.id, name: task.name } });
+  async setResponsible(dto: setResponsibleDto, id: number): Promise<Tasks_users> {
+    const { user_id } = dto;
+    const task = await this.taskRepository.findOne({ where: { id: id } });
     if (!task) {
       throw new NotFoundException('Task don\t found');
     }
-    if (!taskCurrentUser && currentUser.role === 'employee') {
-      throw new BadRequestException("Task dose'nt apply to this employee");
+    const user = await this.usersRepository.getUserById(user_id);
+    if (!user) {
+      throw new NotFoundException("User don't found");
     }
-
-    task.responsible_id = responsible_id;
-    await task.save();
-    return task;
+    const tasksUsers = await this.tasksUsersRepository.createTasksUsers({ user_id, task_id: id });
+    return tasksUsers;
   }
 
-  async updateTask(dto: updateTaskDto, currentUser: CurrentUserDto): Promise<string> {
-    const { id, name, description } = dto;
+  async updateTask(dto: updateTaskDto, id: number, currentUser: CurrentUserDto): Promise<Task> {
+    const { name, description } = dto;
     const task = await this.taskRepository.findOne({ where: { id } });
-    const taskCurrentUser = await this.taskRepository.findOne({ where: { responsible_id: currentUser.id, name: task.name } });
+    const taskCurrentUser = await this.tasksUsersRepository.getTasksUsersCompliance(currentUser.id, id);
+    if (!taskCurrentUser && currentUser.role === 'employee') {
+      throw new BadRequestException("User don't tied to current task ");
+    }
     if (!task) {
       throw new NotFoundException('Task don\t found');
     }
-    if (!taskCurrentUser && currentUser.role === 'employee') {
-      throw new BadRequestException("Task dose'nt apply to this employee");
-    }
-    await this.taskRepository.update({ name, description }, { where: { id } });
-    return 'Task update';
+    task.name = name;
+    task.description = description;
+    await task.save();
+    return task;
   }
 }

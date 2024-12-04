@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-// документируем, указывая, какого формата данные ожидаются на вход
 export class CreateUsersProjectsDto {
   @ApiProperty({ example: 12, description: 'User id' })
   readonly user_id: number;

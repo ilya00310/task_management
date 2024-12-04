@@ -9,9 +9,8 @@ interface UserProjectsCreation {
   tableName: 'Users_projects',
   timestamps: false,
 })
-// здесь документируем класс user,чтобы указывало его структуру, которая ожидается на возврат
-export class UsersProjects extends Model<UsersProjects, UserProjectsCreation> {
-  @ApiProperty({ example: '1', description: 'Unique id' })
+export class Users_projects extends Model<Users_projects, UserProjectsCreation> {
+  @ApiProperty({ example: 1, description: 'Unique id' })
   @Column({
     type: DataType.INTEGER,
     unique: true,

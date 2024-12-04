@@ -26,12 +26,12 @@ export class UsersService {
     await user.save();
     return user;
   }
-  async getUserByEmail(email: string) {
+  async getUserByEmail(email: string): Promise<User> {
     const user = await this.userRepository.findOne({ where: { email }, include: { all: true } });
     return user;
   }
 
-  async getUserById(id: number) {
+  async getUserById(id: number): Promise<User> {
     const user = await this.userRepository.findOne({ where: { id }, include: { all: true } });
     return user;
   }

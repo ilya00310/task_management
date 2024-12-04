@@ -4,7 +4,6 @@ interface TaskCreation {
   name: string;
   description: string;
   project_id: number;
-  responsible_id: number;
   deadline: Date;
   status: boolean;
 }
@@ -15,7 +14,6 @@ interface TaskCreation {
   createdAt: 'created_at',
   updatedAt: 'updated_at',
 })
-// здесь документируем класс user,чтобы указывало его структуру, которая ожидается на возврат
 export class Task extends Model<Task, TaskCreation> {
   @ApiProperty({ example: '1', description: 'Unique id' })
   @Column({
@@ -37,10 +35,6 @@ export class Task extends Model<Task, TaskCreation> {
   @ApiProperty({ example: 12, description: 'Project id' })
   @Column({ type: DataType.INTEGER, allowNull: false })
   project_id: number;
-
-  @ApiProperty({ example: 14, description: 'Responsible user id' })
-  @Column({ type: DataType.INTEGER, allowNull: true, defaultValue: null })
-  responsible_id: number;
 
   @ApiProperty({ example: '2024-01-12', description: 'deadline for completion' })
   @Column({ type: DataType.DATE, allowNull: true, defaultValue: null })
