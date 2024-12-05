@@ -19,3 +19,6 @@ make start_service
 ```
 
 4. Производить соответсвующие запросы через postman или curl
+
+Диаграмма сущностей:
+https://drive.google.com/file/d/1EZxKZ158UFdV7rYaqnyCjXiFOGV1dQ-x/view?usp=sharing
