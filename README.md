@@ -15,7 +15,6 @@ make seed_run
 
 ```
 make start_service
-//
 ```
 
 4. Производить соответсвующие запросы через postman или curl
