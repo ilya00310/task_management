@@ -12,7 +12,6 @@ interface ProjectCreation {
   createdAt: 'created_at',
   updatedAt: 'updated_at',
 })
-// здесь документируем класс user,чтобы указывало его структуру, которая ожидается на возврат
 export class Project extends Model<Project, ProjectCreation> {
   @ApiProperty({ example: '1', description: 'Unique id' })
   @Column({
@@ -32,8 +31,8 @@ export class Project extends Model<Project, ProjectCreation> {
   description: string;
 
   @ApiProperty({ example: 'Ilya', description: 'Responsible user' })
-  @Column({ type: DataType.NUMBER, allowNull: false })
-  creator_id: Number;
+  @Column({ type: DataType.INTEGER, allowNull: false })
+  creator_id: number;
 
   @ApiProperty({ example: 'null', description: 'Project archived or not' })
   @Column({ type: DataType.DATE, allowNull: true, defaultValue: null })

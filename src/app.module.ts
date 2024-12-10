@@ -10,6 +10,10 @@ import { JwtService } from '@nestjs/jwt';
 import { TasksModule } from './tasks/tasks.module';
 import { ProjectsModule } from './projects/projects.module';
 import { UsersProjectsModule } from './users_projects/usersProjects.module';
+import { Project } from './projects/projects.modules';
+import { Task } from './tasks/tasks.modules';
+import { Tasks_users } from './tasks_users/tasksUsers.modules';
+import { Users_projects } from './users_projects/usersProjects.modules';
 
 @Module({
   imports: [
@@ -22,7 +26,8 @@ import { UsersProjectsModule } from './users_projects/usersProjects.module';
       username: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      models: [User],
+      port: +process.env.DB_PORT,
+      models: [User, Project, Task, Tasks_users, Users_projects],
       autoLoadModels: true,
     }),
     UsersModule,

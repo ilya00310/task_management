@@ -1,5 +1,5 @@
 import { InjectModel } from '@nestjs/sequelize';
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Users_projects } from './usersProjects.modules';
 import { CreateUsersProjectsDto } from './dto/createUsersProject';
 @Injectable()

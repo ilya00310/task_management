@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt')
 module.exports = {
   up: async (migration_interface) => {
-    const hashPassword = await bcrypt.hash('root', 5)
+    const hashPassword = await bcrypt.hash('root', 10)
     await migration_interface.bulkInsert('Users', [
       {
         password: hashPassword,

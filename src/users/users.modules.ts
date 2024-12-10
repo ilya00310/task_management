@@ -12,7 +12,6 @@ interface UserCreation {
   createdAt: 'created_at',
   updatedAt: 'updated_at',
 })
-// здесь документируем класс user,чтобы указывало его структуру, которая ожидается на возврат
 export class User extends Model<User, UserCreation> {
   @ApiProperty({ example: '1', description: 'Unique id' })
   @Column({

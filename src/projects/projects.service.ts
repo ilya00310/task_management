@@ -23,7 +23,6 @@ export class ProjectsService {
 
   async deleteProject(id: number) {
     const project = await this.projectRepository.findOne({ where: { id } });
-    // найти способ автоматизировать проверку на null
     if (!project || project.deleted_at !== null) {
       throw new NotFoundException("Project don't found");
     }

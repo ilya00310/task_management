@@ -31,7 +31,6 @@ export class TasksService {
     await this.tasksUsersRepository.createTasksUsers({ user_id: id, task_id: task.id });
     return task;
   }
-  // добавить проверку на то, что пользователь является создателем проекта таски
   async deleteTask(id: number, currentUser: CurrentUserDto): Promise<Task> {
     const task = await this.taskRepository.findOne({ where: { id } });
     if (!task) {

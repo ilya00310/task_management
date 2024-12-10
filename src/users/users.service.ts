@@ -2,7 +2,6 @@ import { InjectModel } from '@nestjs/sequelize';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { User } from './users.modules';
 import { CreateUserDto } from './dto/createUser';
-import { DeleteUserDto } from './dto/deleteUser';
 @Injectable()
 export class UsersService {
   constructor(@InjectModel(User) private userRepository: typeof User) {}
@@ -11,8 +10,7 @@ export class UsersService {
     return user;
   }
 
-  async delete_employee(userDto: DeleteUserDto): Promise<User> {
-    const { id } = userDto;
+  async delete_employee(id: number): Promise<User> {
     const user = await this.userRepository.findOne({ where: { id } });
     if (!user) {
       throw new NotFoundException("User don't found");

@@ -1,0 +1,42 @@
+version: '3.0'
+
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:12
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 'root'
+      POSTGRES_DB: task_management
+      PG_DATA: /var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: always
+
+  main:
+    container_name: main
+    build:
+      context: .
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - 5000:5000
+      - 9229:9229
+    command: >
+      sh -c "
+        npx sequelize-cli db:migrate 
+        npx sequelize-cli db:seed:all 
+        npm run start_service
+      "
+    depends_on:
+      - postgres
+    restart: always
+volumes:
+  pgdata:
