@@ -6,7 +6,3 @@ seed_run:
 	npx sequelize-cli db:seed:all
 make create_db:
 	npx sequelize-cli db:create
-make create_correct_db:
-	npx sequelize-cli db:create
-	npx sequelize-cli db:migrate
-	npx sequelize-cli db:seed:all

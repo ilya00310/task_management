@@ -8,7 +8,7 @@
 
 ```
 npm install
-make create_correct_db
+docker-compose up
 ```
 
 3. Запустить сервис
@@ -17,7 +17,14 @@ make create_correct_db
 make start_service
 ```
 
-4. Производить соответсвующие запросы через postman или curl
+4. Производить соответсвующие запросы через postman или curl, для запросов админа можно получить токен уже существующего юзера:
+
+```
+{
+    "password": "root",
+    "email": "emailAdmin@.com"
+}
+```
 
 Диаграмма сущностей:
 https://drive.google.com/file/d/1EZxKZ158UFdV7rYaqnyCjXiFOGV1dQ-x/view?usp=sharing
