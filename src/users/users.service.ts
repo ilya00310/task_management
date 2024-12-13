@@ -10,7 +10,7 @@ export class UsersService {
     return user;
   }
 
-  async delete_employee(id: number): Promise<User> {
+  async deleteEmployee(id: number): Promise<User> {
     const user = await this.userRepository.findOne({ where: { id } });
     if (!user) {
       throw new NotFoundException("User don't found");

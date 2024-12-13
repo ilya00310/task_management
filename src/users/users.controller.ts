@@ -25,6 +25,6 @@ export class UsersController {
   @UseGuards(RolesGuard)
   @Delete()
   archive_employee(@Query('id') id: string) {
-    return this.UsersService.delete_employee(Number(id));
+    return this.UsersService.deleteEmployee(Number(id));
   }
 }
