@@ -28,3 +28,5 @@ make start_service
 
 Диаграмма сущностей:
 https://drive.google.com/file/d/1EZxKZ158UFdV7rYaqnyCjXiFOGV1dQ-x/view?usp=sharing
+
+Адрес swagger: api/docs
