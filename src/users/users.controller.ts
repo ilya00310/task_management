@@ -23,7 +23,7 @@ export class UsersController {
   @ApiResponse({ status: 200, type: [User] })
   @Roles('Admin')
   @UseGuards(RolesGuard)
-  @Delete(':id')
+  @Delete()
   archive_employee(@Query('id') id: string) {
     return this.UsersService.delete_employee(Number(id));
   }
