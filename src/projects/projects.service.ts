@@ -45,14 +45,14 @@ export class ProjectsService {
     return usersProject;
   }
 
-  async updateProject(dto: UpdateProjectDto): Promise<Project> {
-    const { project_id, name, description } = dto;
-    const project = await this.projectRepository.findOne({ where: { id: project_id, deleted_at: null } });
+  async updateProject(dto: UpdateProjectDto, id: number): Promise<Project> {
+    const { name, description } = dto;
+    const project = await this.projectRepository.findOne({ where: { id, deleted_at: null } });
     if (!project) {
       throw new NotFoundException("Project don't found");
     }
-    await this.projectRepository.update({ name, description }, { where: { id: project_id } });
-    const newProject = await this.projectRepository.findOne({ where: { id: project_id } });
+    await this.projectRepository.update({ name, description }, { where: { id } });
+    const newProject = await this.projectRepository.findOne({ where: { id } });
     return newProject;
   }
 

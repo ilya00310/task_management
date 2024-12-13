@@ -45,7 +45,7 @@ export class ProjectsController {
   @Patch()
   @Roles('Admin')
   @UseGuards(RolesGuard)
-  post(@Body() taskDto: UpdateProjectDto) {
-    return this.ProjectsService.updateProject(taskDto);
+  post(@Query('id') id: string, @Body() taskDto: UpdateProjectDto) {
+    return this.ProjectsService.updateProject(taskDto, Number(id));
   }
 }
