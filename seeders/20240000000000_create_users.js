@@ -1,8 +1,10 @@
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs');
+
 module.exports = {
-  up: async (migration_interface) => {
-    const hashPassword = await bcrypt.hash('root', 10)
-    await migration_interface.bulkInsert('Users', [
+  up: async (queryInterface) => {
+    const hashPassword = await bcrypt.hash('root', 10);
+
+    await queryInterface.bulkInsert('Users', [
       {
         password: hashPassword,
         email: 'emailAdmin@.com',
@@ -13,7 +15,8 @@ module.exports = {
       },
     ]);
   },
-  down: async (migration_interface) => {
-    await migration_interface.bulkDelete('Users', {}, {});
+
+  down: async (queryInterface) => {
+    await queryInterface.bulkDelete('Users', null, {});
   },
 };

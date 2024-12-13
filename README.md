@@ -4,11 +4,11 @@
 
 1. Прописать свой .env файл на основе .env.example
 
-2. Создать и наполнить таблицы:
+2. Установить зависимости, cоздать и наполнить таблицы:
 
 ```
-make migrate_latest
-make seed_run
+npm install
+make create_correct_db
 ```
 
 3. Запустить сервис

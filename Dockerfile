@@ -1,14 +1,15 @@
-FROM node:16-alpine
+FROM node:16
 
 WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm install 
+RUN npm install
 
-COPY . . 
+RUN chmod -R 755 /app/node_modules/.bin/sequelize-cli
+
+COPY . .
 
 EXPOSE 8081
 
-CMD ["npm", "run","start_service"]
- 
+CMD ["npm", "run", "start_service"]
